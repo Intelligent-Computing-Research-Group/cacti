@@ -66,6 +66,28 @@ CACTI 5.3 and 6.0 activate an entire row of mats to read/write a single
 block of data. This technique improves reliability at the cost of  
 power. CACTI 6.5 activates minimum number of mats just enough to retrieve 
 a block to minimize power.
+---------------------------------------------------------------------------
+
+Handling the compilation error:
+
+1. For the clang problem, delete `= &(g_tp.peri_global)` in the following code.
+
+```
+int cont_stats[2 /*l2 or l3*/][5/* cores */][ROUTER_TYPES][7 /*banks*/][8 /* cycle time */];
+
+  Nuca::Nuca(
+      /*TechnologyParameter::*/DeviceType *dt = &(g_tp.peri_global)
+      ):deviceType(dt)
+{
+  init_cont();
+}
+```
+
+
+2. update `-gstabs+` to `-g`; and remove `-m64` in the `cacti.mk` file.
+  - https://github.com/HewlettPackard/cacti/issues/1
+
+
 
 How to use the tool?
 ====================
